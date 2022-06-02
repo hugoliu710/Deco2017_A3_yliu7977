@@ -32,7 +32,7 @@
 				<label class="layui-form-label">urgent Level</label>
 				<div class="layui-input-block">
 					<select name="level" required  lay-verify="required">
-						
+						<!-- choose important and emergency level -->
 						<option value="1">Important and urgent</option>
 						<option value="2">Important not urgent</option>
 						<option value="3">Not important but urgent</option>
@@ -58,7 +58,7 @@
         var upload = layui.upload;
         var layer = layui.layer;
         var laydate = layui.laydate;
-        
+        <!-- save task -->
         form.on('submit(dataForm)', function(data){
 			let project_name = data.field.project_name
 			let due_date = data.field.due_date
