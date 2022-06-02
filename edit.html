@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="layui/layui.js" ></script>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script type="text/javascript" src="js/jquery.js" ></script>
+</head>
+<body>
+
+	<!-- create task and the task will show in different area based on its level -->
+<div class="layui-card">
+    <div class="layui-card-header">Task Info</div>
+    <div class="layui-card-body">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">Name</label>
+                <div class="layui-input-block">
+					<input type="hidden" name="task_level">
+					<input type="hidden" name="level_index">
+                    <input type="text" name="project_name" required  lay-verify="required" placeholder="project name" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">Date</label>
+                <div class="layui-input-block">
+                    <input type="date" name="due_date" required  lay-verify="required" placeholder="due date" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">urgent Level</label>
+				<div class="layui-input-block">
+					<select name="level" required  lay-verify="required">
+						
+						<option value="1">Important and urgent</option>
+						<option value="2">Important not urgent</option>
+						<option value="3">Not important but urgent</option>
+						<option value="4">Neither urgent  nor important</option>
+					</select>
+				</div>
+			</div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="dataForm">save</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">reset</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+
+	
+    layui.use(['form', 'upload', 'layer', 'laydate'], function(){
+        var form = layui.form;
+        var upload = layui.upload;
+        var layer = layui.layer;
+        var laydate = layui.laydate;
+        
+        form.on('submit(dataForm)', function(data){
+			let project_name = data.field.project_name
+			let due_date = data.field.due_date
+			let level = data.field.level
+			let task_level = data.field.task_level
+			let level_index = data.field.level_index
+			
+			let taskList = JSON.parse(localStorage.getItem("taskList"))
+			if (task_level != '' && level_index != '') {
+				console.log(task_level, level)
+				if (task_level != level) {
+					taskList[level+''].push({
+						"project_name": project_name,
+						"due_date": due_date,
+						"level": level,
+					})
+					taskList[task_level+''].splice(level_index - 1, 1)
+					localStorage.setItem("taskList", JSON.stringify(taskList))
+					window.parent.updateTable()
+					return false;
+				}
+				taskList[level+''][level_index - 1]['project_name'] = project_name
+				taskList[level+''][level_index - 1]['due_date'] = due_date
+				localStorage.setItem("taskList", JSON.stringify(taskList))
+				window.parent.updateTable()
+				return false;
+			}
+			
+			console.log(taskList)
+			taskList[level+''].push({
+				"project_name": project_name,
+				"due_date": due_date,
+				"level": level,
+			})
+			localStorage.setItem("taskList", JSON.stringify(taskList))
+			window.parent.updateTable()
+            return false;
+        });
+		
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<link rel="stylesheet" href="layui/css/layui.css">
+		<script src="layui/layui.js"></script>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<style type="text/css">
+			html,
+			body,
+			.layui-card,
+			.layui-card-body {
+				height: 100%;
+			}
+
+			.layui-row>div {}
+
+			.layui-row>div .grid-demo {
+				height: 200px;
+				margin: 1%;
+				color: white;
+				padding: 0.5%;
+				overflow: scroll;
+			}
+
+			.layui-row>div:last-child .grid-demo {
+				height: 100px;
+				margin: 0.5% 0.5%;
+				line-height: 100px;
+				text-align: center;
+				color: black;
+			}
+
+			.layui-row, .layui-col-xs12:first-child {
+				text-align: center;
+				height: 25%;
+			}
+			
+			.layui-row input:first-child {
+				position: absolute;
+				left: 50%;
+				bottom: 0;
+				width: 75%;
+				transform: translateX(-50%);
+			}
+			.music {
+				height: 40px;;
+				line-height: 40px;
+				border: 2px solid #000;
+				border-radius: 50px;
+				width: 20%;
+				text-align: center;
+				margin-left: 10px;
+				margin: auto;
+				margin-top: 30px;
+				left: 50%;
+				transform: translateX(-50%);
+			}
+			.music i:nth-child(2) {
+				margin: 0 15px;
+			}
+			.speaker {
+				float: right;
+				margin-top: 30px;
+				margin-right: 10%;
+			}
+			.speaker input {
+				vertical-align: middle;
+				width: 50%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="layui-card">
+			<div class="layui-card-body">
+
+				<table id="music" lay-filter="test"></table>
+				<div style="text-align: center;">
+					<img width="30%" style="margin: auto;" src="images/music.PNG" >
+				</div>
+				<div class="layui-row">
+					<div class="layui-col-xs12">
+						<input type="range" name="" id="" value="40" />
+					</div>
+					<div class="layui-row">
+						<div class="music layui-col-xs4" id="music">
+							<i class="layui-icon layui-icon-prev"></i>
+							<i onclick="playMusic(this)" class="layui-icon layui-icon-play"></i>
+							<i class="layui-icon layui-icon-next"></i>
+						</div>
+						<div class="layui-col-xs4 speaker">
+							<i class="layui-icon layui-icon-speaker"></i>
+							<input type="range" name="" id="" value="50" />
+						</div>
+						
+					</div>
+				</div>
+				<script type="text/javascript">
+					layui.use(['table', 'form', 'layer'], function() {
+						var layer = layui.layer
+						var tableInstance = layui.table.render({
+							elem: '#music',
+							data: [{
+								"Song": "Habits.mp3",
+								"Singer": "Tove Lo",
+								"Time": "2022-05-31"
+							}],
+							cols: [
+								[ 
+									{
+										field: 'Song',
+										title: 'Song',
+									},
+									{
+										field: 'Singer',
+										title: 'Singer',
+									},
+									{
+										field: 'Time',
+										title: 'Time',
+									}
+								]
+							]
+						});
+						var mp3Url = "music/Tove Lo - Habits.mp3";
+						var player = new Audio(mp3Url);
+						window.playMusic = function(e) {
+							if ($(e).attr("class") == 'layui-icon layui-icon-play') {
+								$(e).attr("class", "layui-icon  layui-icon-pause")
+								player.play();
+							} else {
+								$(e).attr("class", "layui-icon layui-icon-play")
+								player.pause();
+							}
+						}
+					});
+				</script>
+
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<!-- all the tasks will be shown up in this page and be editted -->
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<link rel="stylesheet" href="layui/css/layui.css">
+		<script src="layui/layui.js"></script>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<style type="text/css">
+			.layui-row>div {}
+
+			.layui-row>div .grid-demo {
+				height: 200px;
+				margin: 1%;
+				color: white;
+				padding: 0.5%;
+				overflow: scroll;
+			}
+
+			.layui-row>div:last-child .grid-demo {
+				height: 100px;
+				margin: 0.5% 0.5%;
+				line-height: 100px;
+				text-align: center;
+				color: black;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<div class="layui-row">
+					<div class="layui-col-xs12">
+						<div style="background-color: #FF5722" class="grid-demo">
+							<h1>Important and urgent</h1>
+							<table id="level_01" lay-filter="test"></table>
+						</div>
+					</div>
+					<div class="layui-col-xs12">
+						
+						<div style="background-color: #FFB800" class="grid-demo">
+							<h1>Important not urgent</h1>
+							<table id="level_02" lay-filter="test"></table>
+						</div>
+					</div>
+					<div class="layui-col-xs12">
+						
+						<div style="background-color: #01AAED" class="grid-demo">
+							<h1>Not important but urgent</h1>
+							<table id="level_03" lay-filter="test"></table>
+						</div>
+					</div>
+					<div class="layui-col-xs12">
+						<div style="background-color: #009688" class="grid-demo">
+							<h1>Neither urgent  nor important</h1>
+							<table id="level_04" lay-filter="test"></table>
+						</div>
+					</div>
+					<div class="layui-col-xs12">
+						
+					</div>
+				</div>
+
+				<script type="text/javascript">
+					layui.use(['table', 'form', 'layer'], function() {
+						var layer = layui.layer
+						let taskList = JSON.parse(localStorage.getItem("taskList"))
+						console.log(taskList['1'])
+						function loadDate(level) {
+							var tableInstance = layui.table.render({
+								elem: '#level_0'+level,
+								data: taskList[''+level],
+								cols: [
+									[ 
+										{
+											type: 'numbers',
+											title: 'number',
+										},
+										{
+											field: 'project_name',
+											title: 'Project name',
+										},
+										{
+											field: 'due_date',
+											title: 'Due Date',
+										},
+							
+										{
+											title: 'Operation ',
+											fixed: 'right',
+											templet: '<div><button type="button" class="layui-btn layui-btn-sm" onclick="updateModel('+level+', {{ d.LAY_INDEX }})"><i class="layui-icon">&#xe642;</i></button><button type="button" class="layui-btn layui-btn-danger layui-btn-sm" onclick="removeModel('+level+', {{ d.LAY_INDEX }})" ><i class="layui-icon">&#xe640;</i></button></div>'
+										}
+									]
+								]
+							});
+						}
+						
+						
+						window.updateModel = function(level, level_index) {
+							layui.layer.open({
+								type: 2,
+								content: 'edit.html', 
+								area: ['700px', '300px'],
+								maxmin: true,
+								title: 'INFO',
+								shade: false,
+								zIndex: layer.zIndex,
+								success: function(layero, index) {
+									layer.setTop(layero);
+									layer.iframeAuto(index)
+									let body = layer.getChildFrame('body', index);
+									let iframeWin = window[layero.find('iframe')[0][
+										'name'
+									]]; 
+									
+									body.find(`[name=task_level]`).val(level)
+									body.find(`[name=level_index]`).val(level_index)
+								},
+							});
+						}
+						
+						window.updateTable = function() {
+							taskList = JSON.parse(localStorage.getItem("taskList"))
+							location.reload()
+						}
+
+						window.removeModel = function(level, index) {
+							taskList[level+''].splice(index - 1, 1)
+							localStorage.setItem("taskList", JSON.stringify(taskList))
+							location.reload()
+						}
+						
+						
+						loadDate(1)
+						loadDate(2)
+						loadDate(3)
+						loadDate(4)
+					});
+				</script>
+
+			</div>
+		</div>
+	</body>
+</html>
