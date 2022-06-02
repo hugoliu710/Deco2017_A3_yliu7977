@@ -52,13 +52,13 @@
 
 <script>
 
-	
+	<!-- save task -->
     layui.use(['form', 'upload', 'layer', 'laydate'], function(){
         var form = layui.form;
         var upload = layui.upload;
         var layer = layui.layer;
         var laydate = layui.laydate;
-        <!-- save task -->
+        
         form.on('submit(dataForm)', function(data){
 			let project_name = data.field.project_name
 			let due_date = data.field.due_date
