@@ -10,7 +10,7 @@ layui.define(['element', 'layer'], function(exports) {
 		pad: [768, 990],
 		mobile: [0, 767]
 	}
-
+	// suitable size
 	var getDevice = function() {
 		var width = $(window).width();
 		for (var i in screen_size) {
@@ -102,7 +102,7 @@ layui.define(['element', 'layer'], function(exports) {
 			}
 		});
 
-		// 默认触发第一个子菜单的点击事件
+		// The click event of the first submenu is the default setting
 		$('#nav li.layui-nav-item:eq(3) > a:eq(0)').trigger('click');
 
 		tabs.onChange(function(data) {
@@ -152,7 +152,7 @@ layui.define(['element', 'layer'], function(exports) {
 		});
 
 		var tipIndex;
-		// 菜单收起后的模块信息小提示
+		// Module information after menu retracted
 		$('#Nav li > a').hover(function() {
 			var $this = $(this);
 			if (isFold) {
